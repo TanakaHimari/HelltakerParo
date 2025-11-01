@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 937d1c2a643660249aea109738f853cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
-  moveSpeed: 1
+  moveSpeed: 10
   moveInput: {x: 0, y: 0}
 --- !u!212 &440784231
 SpriteRenderer:

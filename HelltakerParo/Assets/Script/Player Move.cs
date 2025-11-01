@@ -3,21 +3,23 @@ using UnityEngine.InputSystem; // 新Input System用
 
 public class PlayerMove : MonoBehaviour
 {
-    public float moveSpeed = 1f; // 移動速度
-
+    [Header("1マス移動")]
     [SerializeField]
-    private Vector2 moveInput;   // 入力された方向ベクトル
-
-    void Update()
-    {
-        // 入力方向に移動（フレームごとに更新）
-        Vector3 movement = new Vector3(moveInput.x, moveInput.y, 0f);
-        transform.position += movement * moveSpeed * Time.deltaTime;
-    }
+    [Range(1f,10f)]
+    //1回の移動距離(1マス)
+    private float moveDistance = 1f; 
 
     public void OnMove(InputValue value)
     {
-        Debug.Log("a");
-        moveInput = value.Get<Vector2>();
+        Vector2 input = value.Get<Vector2>();
+        Debug.Log("Move input: " + input);
+
+        // 入力方向がゼロじゃないときだけ動く
+        if (input != Vector2.zero)
+        {
+            Vector3 moveDir = new Vector3(input.x, input.y, 0f).normalized;
+            transform.position += moveDir * moveDistance;
+        }
     }
+
 }
