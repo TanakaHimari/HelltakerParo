@@ -7,19 +7,28 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     [Range(1f,10f)]
     //1回の移動距離(1マス)
-    private float moveDistance = 1f; 
+    private float moveDistance = 1f;
 
-    public void OnMove(InputValue value)
+    [Header("壁")]
+    [SerializeField]
+    private string wallTag = "Wall";
+
+   public void OnMove(InputValue value)
     {
         Vector2 input = value.Get<Vector2>();
-        Debug.Log("Move input: " + input);
+        if (input == Vector2.zero) return;
 
-        // 入力方向がゼロじゃないときだけ動く
-        if (input != Vector2.zero)
+        Vector3 moveDir = new Vector3(input.x, input.y, 0f).normalized;
+        Vector3 targetPos = transform.position + moveDir * moveDistance;
+
+        // 移動先に壁タグのオブジェクトがあるか判定
+        Collider2D hit = Physics2D.OverlapPoint(targetPos);
+        if (hit != null && hit.CompareTag(wallTag))
         {
-            Vector3 moveDir = new Vector3(input.x, input.y, 0f).normalized;
-            transform.position += moveDir * moveDistance;
+            Debug.Log("壁があるので移動しない");
+            return;
         }
-    }
 
+        transform.position = targetPos;
+    }
 }
