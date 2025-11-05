@@ -13,6 +13,11 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private string wallTag = "Wall";
 
+    [Header("木箱")]
+    [SerializeField]
+    private string boxTag = "Box";
+
+
    public void OnMove(InputValue value)
     {
         Vector2 input = value.Get<Vector2>();
@@ -21,14 +26,35 @@ public class PlayerMove : MonoBehaviour
         Vector3 moveDir = new Vector3(input.x, input.y, 0f).normalized;
         Vector3 targetPos = transform.position + moveDir * moveDistance;
 
-        // 移動先に壁タグのオブジェクトがあるか判定
+        // 移動先に何かあるか調べる
         Collider2D hit = Physics2D.OverlapPoint(targetPos);
-        if (hit != null && hit.CompareTag(wallTag))
-        {
-            Debug.Log("壁があるので移動しない");
-            return;
-        }
 
-        transform.position = targetPos;
+        if (hit == null)
+        {
+            // 何もなければ移動
+            transform.position = targetPos;
+        }
+        else if (hit.CompareTag(boxTag))
+        {
+            // 木箱なら、さらにその先をチェック
+            Vector3 boxTarget = hit.transform.position + moveDir * moveDistance;
+            Collider2D boxHit = Physics2D.OverlapPoint(boxTarget);
+
+            if (boxHit == null || !boxHit.CompareTag(wallTag))
+            {
+                // 木箱を押す（壁がなければ）
+                hit.transform.position = boxTarget;
+                transform.position = targetPos;
+            }
+            else
+            {
+                Debug.Log("木箱の先に壁があるので押せない");
+            }
+
+        }
+        else if (hit.CompareTag(wallTag))
+        {
+            Debug.Log("壁があるので進めない");
+        }
     }
 }
