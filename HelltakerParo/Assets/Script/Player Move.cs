@@ -40,7 +40,7 @@ public class PlayerMove : MonoBehaviour
             Vector3 boxTarget = hit.transform.position + moveDir * moveDistance;
             Collider2D boxHit = Physics2D.OverlapPoint(boxTarget);
 
-            if (boxHit == null || !boxHit.CompareTag(wallTag))
+            if (boxHit == null || !boxHit.CompareTag(wallTag) && !boxHit.CompareTag(boxTag))
             {
                 // –Ø” ‚ğ‰Ÿ‚·i•Ç‚ª‚È‚¯‚ê‚Îj
                 hit.transform.position = boxTarget;
@@ -48,7 +48,7 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                Debug.Log("–Ø” ‚Ìæ‚É•Ç‚ª‚ ‚é‚Ì‚Å‰Ÿ‚¹‚È‚¢");
+                Debug.Log("–Ø” ‚Ìæ‚É‚È‚É‚©‚ ‚é‚Ì‚Å‰Ÿ‚¹‚È‚¢");
             }
 
         }
