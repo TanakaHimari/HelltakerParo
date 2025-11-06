@@ -17,6 +17,10 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private string boxTag = "Box";
 
+    [Header("敵")]
+    [SerializeField]
+    private string enemyTag = "Enemy";
+
 
    public void OnMove(InputValue value)
     {
@@ -52,6 +56,32 @@ public class PlayerMove : MonoBehaviour
             }
 
         }
+        else if (hit.CompareTag(enemyTag))
+        {
+            Vector3 enemyTarget = hit.transform.position + moveDir * moveDistance;
+            Collider2D enemyHit = Physics2D.OverlapPoint(enemyTarget);
+
+            if (enemyHit != null && enemyHit.CompareTag(wallTag))
+            {
+                // 壁がある → エネミーを消滅させる
+                Destroy(hit.gameObject);
+                Debug.Log("エネミーが壁に押し出されて消滅！");
+                transform.position = targetPos;
+                
+            }
+            else if (enemyHit == null || !enemyHit.CompareTag(boxTag) && !enemyHit.CompareTag(enemyTag))
+            {
+                // 壁も箱もエネミーもない → 押せる
+                hit.transform.position = enemyTarget;
+                transform.position = targetPos;
+                
+            }
+            else
+            {
+                Debug.Log("エネミーの先に障害物があるので押せない");
+            }
+        }
+
         else if (hit.CompareTag(wallTag))
         {
             Debug.Log("壁があるので進めない");
