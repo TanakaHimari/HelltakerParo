@@ -11,9 +11,17 @@ public class StoryManager : MonoBehaviour
 
     [SerializeField] private StoryData[] storyDatas;
     [SerializeField] private Image background;
-    //[SerializeField] private Image characterImage;
+    [SerializeField] private Image characterImage;
     [SerializeField] private TextMeshProUGUI storyText;
     [SerializeField] private TextMeshProUGUI characterName;
+
+    // 選択肢ボタン
+    [SerializeField] private Button choiceButton1;
+    [SerializeField] private Button choiceButton2;
+    [SerializeField] private TextMeshProUGUI choiceText1;
+    [SerializeField] private TextMeshProUGUI choiceText2;
+
+
     //ストーリーのエレメント配列番号が必要なのでプロパティを
     public int storyIndex { get; private set; }
     public int textIndex { get; private set; }
@@ -25,29 +33,58 @@ public class StoryManager : MonoBehaviour
     //呼び出しメソッド
     public void SetStoryElement(int _storyIndex, int _textIndex)
     {
-        StopAllCoroutines(); // ← 前の文章が残ってたら止める
-
         //同じ言葉をまとめておくためのvar
         var storyElement = storyDatas[_storyIndex].stories[_textIndex];
-
         //どのストーリーデータの、どのバックグランドか
         background.sprite = storyElement.Background;
         //どのストーリーデータの、どのキャラクタか
-        //characterImage.sprite = storyElement.CharacterImage;
-
-        // 先輩の名前を取得（未入力なら「センパイ」）
-        string senpaiName = PlayerPrefs.GetString("SenpaiName", "センパイ");
-
-        // StoryTextとCharacterNameに {senpai} を使って差し込む
-        string replacedText = storyElement.StoryText.Replace("{senpai}", senpaiName);
-        string replacedName = storyElement.CharacterName.Replace("{senpai}", senpaiName);
-
+        characterImage.sprite = storyElement.CharacterImage;
+        //どのストーリーデータの、どのテキストか
+        storyText.text = storyElement.StoryText;
         //どのストーリーデータの、どのキャラ名か
-        characterName.text = replacedName;
+        characterName.text = storyElement.CharacterName;
+        // 選択肢がある場合のみ表示
+        if (!string.IsNullOrEmpty(storyElement.Choice1) || !string.IsNullOrEmpty(storyElement.Choice2))
+        {
+            choiceButton1.gameObject.SetActive(true);
+            choiceButton2.gameObject.SetActive(true);
 
-        // 1文字ずつ表示するコルーチンを開始
-        StartCoroutine(TypeSentence(replacedText));
+            choiceText1.text = storyElement.Choice1;
+            choiceText2.text = storyElement.Choice2;
+
+            // ボタンにイベントを登録
+            choiceButton1.onClick.RemoveAllListeners();
+            choiceButton2.onClick.RemoveAllListeners();
+
+            choiceButton1.onClick.AddListener(() => OnChoiceSelected(1));
+            choiceButton2.onClick.AddListener(() => OnChoiceSelected(2));
+        }
+        else
+        {
+            choiceButton1.gameObject.SetActive(false);
+            choiceButton2.gameObject.SetActive(false);
+
+        }
     }
+
+    private void OnChoiceSelected(int choice)
+    {
+        // 選択肢に応じて分岐処理
+        Debug.Log("Player chose option " + choice);
+
+        // 例: 選択肢によって次のテキストインデックスを変える
+        if (choice == 1)
+        {
+            textIndex++;
+        }
+        else if (choice == 2)
+        {
+            textIndex += 2; // 例えば別の分岐へ飛ばす
+        }
+
+        SetStoryElement(storyIndex, textIndex);
+    }
+
 
     private void Update()
     {

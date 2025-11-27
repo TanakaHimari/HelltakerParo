@@ -10,14 +10,14 @@ public class StoryData : ScriptableObject
 }
 
 [System.Serializable]
-
 public class Story
 {
     public Sprite Background;
     public Sprite CharacterImage;
-    [TextArea]
-    public string StoryText;
     public string CharacterName;
+    [TextArea] public string StoryText;
 
+    // プレイヤー選択肢（2択）
+    public string Choice1;
+    public string Choice2;
 }
-
