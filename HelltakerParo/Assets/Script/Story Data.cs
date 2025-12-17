@@ -25,5 +25,5 @@ public class Story
     public int NextIndexForChoice1;
     public int NextIndexForChoice2;
 
-
+   
 }

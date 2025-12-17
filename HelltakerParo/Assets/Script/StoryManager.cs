@@ -42,24 +42,6 @@ public class StoryManager : MonoBehaviour
         //同じ言葉をまとめておくためのvar
         var storyElement = storyDatas[_storyIndex].stories[_textIndex];
 
-        // 背景が設定されている場合のみ反映
-        if (background != null && storyElement.Background != null)
-        {
-            background.sprite = storyElement.Background;
-        }
-
-        // キャラクター画像が設定されている場合のみ反映
-        if (characterImage != null && storyElement.CharacterImage != null)
-        {
-            characterImage.sprite = storyElement.CharacterImage;
-            characterImage.gameObject.SetActive(true);
-        }
-        else if (characterImage != null)
-        {
-            // nullなら非表示にしておく
-            characterImage.gameObject.SetActive(false);
-        }
-
 
 
         //どのストーリーデータの、どのバックグランドか
@@ -97,7 +79,7 @@ public class StoryManager : MonoBehaviour
     private void OnChoiceSelected(int choice)
     {
         var storyElement = storyDatas[storyIndex].stories[textIndex];
-
+  
         if (choice == 1)
         {
             textIndex = storyElement.NextIndexForChoice1;
@@ -106,13 +88,16 @@ public class StoryManager : MonoBehaviour
         {
             textIndex = storyElement.NextIndexForChoice2;
         }
+       
 
         SetStoryElement(storyIndex, textIndex);
     }
+    
+   
 
 
 
-       private void OnEnable()
+    private void OnEnable()
     {
         nextAction.Enable();
     }
