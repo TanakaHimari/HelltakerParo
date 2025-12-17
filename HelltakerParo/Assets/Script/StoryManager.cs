@@ -69,21 +69,20 @@ public class StoryManager : MonoBehaviour
 
     private void OnChoiceSelected(int choice)
     {
-        // 選択肢に応じて分岐処理
-        Debug.Log("Player chose option " + choice);
+        var storyElement = storyDatas[storyIndex].stories[textIndex];
 
-        // 例: 選択肢によって次のテキストインデックスを変える
         if (choice == 1)
         {
-            textIndex++;
+            textIndex = storyElement.NextIndexForChoice1;
         }
         else if (choice == 2)
         {
-            textIndex += 2; // 例えば別の分岐へ飛ばす
+            textIndex = storyElement.NextIndexForChoice2;
         }
 
         SetStoryElement(storyIndex, textIndex);
     }
+
 
 
     private void Update()

@@ -20,4 +20,10 @@ public class Story
     // プレイヤー選択肢（2択）
     public string Choice1;
     public string Choice2;
+
+    // 選択肢ごとの分岐先インデックス
+    public int NextIndexForChoice1;
+    public int NextIndexForChoice2;
+
+
 }
