@@ -13,7 +13,27 @@ MonoBehaviour:
   m_Name: New Data
   m_EditorClassIdentifier: Assembly-CSharp::StoryData
   stories:
-  - Background: {fileID: 0}
+  - Background: {fileID: 21300000, guid: 539efa2cbf204e340b25e694e9979570, type: 3}
+    CharacterImage: {fileID: 21300000, guid: 539efa2cbf204e340b25e694e9979570, type: 3}
+    CharacterName: "\u2666\uFF1F\uFF1F\uFF1F\u2666"
+    StoryText: "\u3084\u3042\u3001\u3084\u3063\u3068\u6765\u3066\u304F\u308C\u305F\u3093\u3060\u306D\u3002\u8ABF\u5B50\u306F\u3069\u3046\uFF1F"
+    Choice1: "\u306A\u3093\u3067\u6355\u307E\u3063\u3066\u3044\u308B\u3093\u3060\uFF1F"
+    Choice2: "\u541B\u306F\u3069\u3046\uFF1F"
+    NextIndexForChoice1: 1
+    NextIndexForChoice2: 2
+  - Background: {fileID: 21300000, guid: 539efa2cbf204e340b25e694e9979570, type: 3}
+    CharacterImage: {fileID: 21300000, guid: 539efa2cbf204e340b25e694e9979570, type: 3}
+    CharacterName: "\u2666\uFF1F\uFF1F\uFF1F\u2666"
+    StoryText: "\u5951\u7D04\u4E0D\u5C65\u884C\u3060\u3088\u3002\u9B54\u754C\u306B\u3082\u6CD5\u5F8B\u304C\u3042\u308B\u306A\u3093\u3066\u77E5\u3089\u306A\u304B\u3063\u305F\u306A\u3002"
+    Choice1: 
+    Choice2: 
+    NextIndexForChoice1: 0
+    NextIndexForChoice2: 0
+  - Background: {fileID: 21300000, guid: 539efa2cbf204e340b25e694e9979570, type: 3}
     CharacterImage: {fileID: 0}
-    StoryText: 
-    CharacterName: 
+    CharacterName: "\u2666\uFF1F\uFF1F\uFF1F\u2666"
+    StoryText: "\u541B\u304C\u6765\u3066\u304F\u308C\u305F\u304A\u304B\u3052\u3067\u306D\u3002\u5143\u6C17\u3060\u3088"
+    Choice1: 
+    Choice2: 
+    NextIndexForChoice1: 0
+    NextIndexForChoice2: 0

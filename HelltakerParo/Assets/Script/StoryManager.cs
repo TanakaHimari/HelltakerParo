@@ -3,10 +3,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class StoryManager : MonoBehaviour
 {
     [SerializeField]
+
+    public InputAction nextAction;
+
     private TMP_Text dialogueText;
 
     [SerializeField] private StoryData[] storyDatas;
@@ -21,6 +25,8 @@ public class StoryManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI choiceText1;
     [SerializeField] private TextMeshProUGUI choiceText2;
 
+    [SerializeField]
+    private string sceneName = "Scene";
 
     //ストーリーのエレメント配列番号が必要なのでプロパティを
     public int storyIndex { get; private set; }
@@ -35,6 +41,27 @@ public class StoryManager : MonoBehaviour
     {
         //同じ言葉をまとめておくためのvar
         var storyElement = storyDatas[_storyIndex].stories[_textIndex];
+
+        // 背景が設定されている場合のみ反映
+        if (background != null && storyElement.Background != null)
+        {
+            background.sprite = storyElement.Background;
+        }
+
+        // キャラクター画像が設定されている場合のみ反映
+        if (characterImage != null && storyElement.CharacterImage != null)
+        {
+            characterImage.sprite = storyElement.CharacterImage;
+            characterImage.gameObject.SetActive(true);
+        }
+        else if (characterImage != null)
+        {
+            // nullなら非表示にしておく
+            characterImage.gameObject.SetActive(false);
+        }
+
+
+
         //どのストーリーデータの、どのバックグランドか
         background.sprite = storyElement.Background;
         //どのストーリーデータの、どのキャラクタか
@@ -85,12 +112,22 @@ public class StoryManager : MonoBehaviour
 
 
 
-    private void Update()
+       private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        nextAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        nextAction.Disable();
+    }
+
+    void Update()
+    {
+        // Spaceキーが押された瞬間を検出
+        if (nextAction.WasPerformedThisFrame())
         {
-            //インデックスを増やす
-            //テキスト部を初期化して
+            // インデックスを増やす
             textIndex++;
 
             // 現在の storyData の文章が終わったら
@@ -103,18 +140,21 @@ public class StoryManager : MonoBehaviour
                 // すべての StoryData が終わったら本編へ
                 if (storyIndex >= storyDatas.Length)
                 {
-                    SceneManager.LoadScene("InGame");
+                    SceneManager.LoadScene(sceneName);
                     return;
                 }
             }
-
+            // テキスト部を初期化して次の文章を表示
             storyText.text = "";
             characterName.text = "";
             SetStoryElement(storyIndex, textIndex);
         }
-    }
+    
 
-    private IEnumerator TypeSentence(string sentence)
+
+}
+
+private IEnumerator TypeSentence(string sentence)
     {
         //１文字づつ文字を分割した状態にする
         // ← 初期化してから表示開始
