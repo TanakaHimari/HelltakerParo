@@ -25,5 +25,12 @@ public class Story
     public int NextIndexForChoice1;
     public int NextIndexForChoice2;
 
-   
+    // ★追加：選択肢ごとのシーン名
+    public string SceneForChoice1;
+    public string SceneForChoice2;
+
+    // ★追加：使用済みフラグ
+    public bool isUsed = false;
+
+
 }

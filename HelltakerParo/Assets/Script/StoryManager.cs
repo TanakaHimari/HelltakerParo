@@ -24,6 +24,11 @@ public class StoryManager : MonoBehaviour
     [SerializeField] private Button choiceButton2;
     [SerializeField] private TextMeshProUGUI choiceText1;
     [SerializeField] private TextMeshProUGUI choiceText2;
+    private ColorBlock defaultColor1;
+    private ColorBlock defaultColor2;
+
+
+
 
     [SerializeField]
     private string sceneName = "Scene";
@@ -35,10 +40,24 @@ public class StoryManager : MonoBehaviour
     public void Start()
     {
         SetStoryElement(storyIndex, textIndex);
+
+        // 起動時に初期色を保存
+        defaultColor1 = choiceButton1.colors;
+        defaultColor2 = choiceButton2.colors;
+
     }
+
+    void ResetChoiceButtonColors()
+    {
+        choiceButton1.colors = defaultColor1;
+        choiceButton2.colors = defaultColor2;
+    }
+
     //呼び出しメソッド
     public void SetStoryElement(int _storyIndex, int _textIndex)
     {
+
+        ResetChoiceButtonColors();
         //同じ言葉をまとめておくためのvar
         var storyElement = storyDatas[_storyIndex].stories[_textIndex];
 
@@ -79,18 +98,39 @@ public class StoryManager : MonoBehaviour
     private void OnChoiceSelected(int choice)
     {
         var storyElement = storyDatas[storyIndex].stories[textIndex];
-  
+
+        storyElement.isUsed = true;
+
         if (choice == 1)
         {
-            textIndex = storyElement.NextIndexForChoice1;
+            // シーン名が設定されていれば遷移
+            if (!string.IsNullOrEmpty(storyElement.SceneForChoice1))
+            {
+                SceneManager.LoadScene(storyElement.SceneForChoice1);
+                return;
+            }
+            else
+            {
+                // シーン名が空なら通常のストーリー進行
+                textIndex = storyElement.NextIndexForChoice1;
+            }
         }
         else if (choice == 2)
         {
-            textIndex = storyElement.NextIndexForChoice2;
+            if (!string.IsNullOrEmpty(storyElement.SceneForChoice2))
+            {
+                SceneManager.LoadScene(storyElement.SceneForChoice2);
+                return;
+            }
+            else
+            {
+                textIndex = storyElement.NextIndexForChoice2;
+            }
         }
-       
 
-        SetStoryElement(storyIndex, textIndex);
+
+
+    SetStoryElement(storyIndex, textIndex);
     }
     
    
